@@ -1,7 +1,11 @@
 'use strict';
 
-var Player = function(game, x, y, frame, tile) {
-  Phaser.Sprite.call(this, game, x, y, 'player', frame);
+var Player = function(game, tile, frame) { // , x, y, frame, tile) {
+  if (!tile) {
+    return null;
+  }
+  
+  Phaser.Sprite.call(this, game, tile.x, tile.y, 'player', frame);
 
   // initialize your prefab here
   this.currentTile = tile;
@@ -16,6 +20,16 @@ Player.prototype.update = function() {
   
   // write your prefab's specific update code here
   
+};
+
+Player.prototype.move = function(newTile) {
+  if (newTile) { // && newTile has no obstructions) {
+  
+    this.currentTile = newTile;
+    this.x = newTile.x;
+    this.y = newTile.y;
+  
+  }
 };
 
 module.exports = Player;

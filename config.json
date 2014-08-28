@@ -1,5 +1,7 @@
 {
   "projectName": "spaz",
+  "dynamic-gameWidth": "window.innerWidth",  
   "gameWidth": "480",
+  "dynamic-gameHeight": "window.innerHeight",
   "gameHeight": "320"
 }

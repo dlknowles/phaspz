@@ -17,6 +17,7 @@ Preload.prototype = {
     this.load.spritesheet('tiles', 'assets/sprites/tilesandobjects' + settings.tileSize + '.png', settings.tileSize, settings.tileSize);
     this.load.spritesheet('player', 'assets/sprites/player.png', settings.tileSize, settings.tileSize);
     this.load.image('startButton', 'assets/sprites/start-button.png');
+    this.load.image('quitButton', 'assets/sprites/quit-button.png');
   },
   create: function() {
     this.asset.cropEnabled = false;

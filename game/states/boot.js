@@ -28,7 +28,8 @@ Boot.prototype = {
     
     this.game.currentLevel = {
       settings: {
-        numTiles: 3
+        numTiles: 3,
+        numTurns: 25
       }
     };
   }

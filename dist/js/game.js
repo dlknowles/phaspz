@@ -1,6 +1,23 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+var Globals = function() {
+  this.PlayerFrames = [6];
+  this.TileFrames = [0, 1, 2, 3, 4, 5];
+  this.SpazBlockerFrames = [11];
+  this.SpazChangerFrames = [11];
+  this.SpazWallerFrames = [11];
+  this.SpazGroundPounderFrames = [11];
+  this.SpazLobberFrames = [11];
+  this.SpazSplitterFrames = [11];
+  
+  
+};
+
+module.exports = Globals;
+},{}],2:[function(require,module,exports){
+'use strict';
+
 var Utilities = function () {
   this.getRandomTile = function(numTiles) {
     var max = (numTiles - 1) || 0;
@@ -12,14 +29,13 @@ var Utilities = function () {
     return Math.floor(Math.random() * (max + 1));
   };
   
-  this.getRandomInt = function(max) {
-    // return Math.floor(Math.random() * (max - min + 1) + min);
-    return Math.floor(Math.random() * (max + 1));
+  this.getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   };
 };
 
 module.exports = Utilities;
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 'use strict';
 
 //global variables
@@ -36,15 +52,15 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":5,"./states/gameover":6,"./states/menu":7,"./states/play":8,"./states/preload":9}],3:[function(require,module,exports){
+},{"./states/boot":7,"./states/gameover":8,"./states/menu":9,"./states/play":10,"./states/preload":11}],4:[function(require,module,exports){
 'use strict';
 
-var Player = function(game, tile, frame) { // , x, y, frame, tile) {
+var Player = function(game, tile) { // , x, y, frame, tile) {
   if (!tile) {
     return null;
   }
   
-  Phaser.Sprite.call(this, game, tile.x, tile.y, 'player', frame);
+  Phaser.Sprite.call(this, game, tile.x, tile.y, 'sprites', game.globals.PlayerFrames[0]);
 
   // initialize your prefab here
   this.currentTile = tile;
@@ -73,16 +89,140 @@ Player.prototype.move = function(newTile) {
 
 module.exports = Player;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
+'use strict';
+
+var Spaz = function(game, tile, type) { // , x, y, frame, tile) {
+  if (!tile) {
+    return null;
+  }
+  
+  if (isNaN(type)) {
+    return null;
+  }
+  
+  this.game = game;
+  type = parseInt(type, 10) || 0;
+    
+  var frames = this.getSpazFrames(type);
+  
+  Phaser.Sprite.call(this, game, tile.x, tile.y, 'sprites', frames[0]);
+
+  // initialize your prefab here
+  this.currentTile = tile;
+  this.x = tile.x;
+  this.y = tile.y;
+  this.type = type;
+};
+
+Spaz.prototype = Object.create(Phaser.Sprite.prototype);
+Spaz.prototype.constructor = Spaz;
+
+Spaz.prototype.update = function() {
+  
+  switch(this.type) {
+    case Spaz.Types.Blocker:
+      this.blockerUpdate();
+      break;
+    case Spaz.Types.Changer:
+      this.changerUpdate();
+      break;
+    case Spaz.Types.Waller:
+      this.wallerUpdate();
+      break;
+    case Spaz.Types.GroundPounder:
+      this.groundPounderUpdate();
+      break;
+    case Spaz.Types.Lobber:
+      this.lobberUpdate();
+      break;
+    case Spaz.Types.Splitter:
+      this.splitterUpdate();
+      break;
+    default:
+      // do nothing
+      break;
+  };
+};
+
+Spaz.prototype.blockerUpdate = function() {
+  
+  
+};
+
+Spaz.prototype.changerUpdate = function() {
+  
+};
+
+Spaz.prototype.wallerUpdate = function() {
+  
+};
+
+Spaz.prototype.groundPounderUpdate = function() {
+  
+};
+
+Spaz.prototype.lobberUpdate = function() {
+  
+};
+
+Spaz.prototype.splitterUpdate = function() {
+  
+};
+
+Spaz.prototype.getSpazFrames = function(type) {
+  switch(type) {
+    case Spaz.Types.Blocker:
+      return this.game.globals.SpazBlockerFrames;
+      break;
+    case Spaz.Types.Changer:
+      return this.game.globals.SpazChangerFrames;
+      break;
+    case Spaz.Types.Waller:
+      return this.game.globals.SpazWallerFrames;
+      break;
+    case Spaz.Types.GroundPounder:
+      return this.game.globals.SpazGroundPounderFrames;
+      break;
+    case Spaz.Types.Lobber:
+      return this.game.globals.SpazLobberFrames;
+      break;
+    case Spaz.Types.Splitter:
+      return this.game.globals.SpazSplitterFrames;
+      break;
+    default:
+      return null;
+      break;
+  }
+};
+
+Spaz.Types = {
+  Blocker: 1,
+  Changer: 2,
+  Waller: 3,
+  GroundPounder: 4,
+  Lobber: 5,
+  Splitter: 6
+};
+
+module.exports = Spaz;
+
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Tile = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'tiles', frame);
-
-  // initialize your prefab here
+  this.game = game;
   this.levelSettings = this.game.currentLevel.settings;
-  //this.inputEnabled = true;
-  //this.events.onInputDown.add(this.clickListener, this);
+  
+  if (isNaN(frame)) {
+    frame = -1;
+  }
+  
+  if (frame < 0) {
+    frame = this.getRandomTile();
+  }
+  
+  Phaser.Sprite.call(this, game, x, y, 'sprites', frame);
 };
 
 Tile.prototype = Object.create(Phaser.Sprite.prototype);
@@ -99,6 +239,18 @@ Tile.prototype.clickListener = function() {
   this.incrementTile();
 };
 
+Tile.prototype.getRandomTile = function() {
+  var result = 0,
+      numTiles = this.levelSettings.numTiles,
+      startTile = this.game.globals.TileFrames[0];
+        
+  numTiles = (numTiles > this.game.globals.TileFrames.length) ? this.game.globals.TileFrames.length : numTiles;
+  
+  result = this.game.utilities.getRandomInt(startTile, (startTile + numTiles - 1));
+  
+  return result;  
+};
+
 Tile.prototype.incrementTile = function() {
   //console.log('incrementing tile...');
   
@@ -111,9 +263,12 @@ Tile.prototype.incrementTile = function() {
 
 module.exports = Tile;
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 
 'use strict';
+
+var Globals = require('../lib/globals'),
+    Utilities = require('../lib/utilities');
 
 function Boot() {
 }
@@ -128,6 +283,8 @@ Boot.prototype = {
     
     this.game.input.maxPointers = 1;
     this.game.state.start('preload');
+    this.game.globals = new Globals();
+    this.game.utilities = new Utilities();
   },
   initGlobals: function() {
     
@@ -151,7 +308,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],6:[function(require,module,exports){
+},{"../lib/globals":1,"../lib/utilities":2}],8:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -179,7 +336,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 
 'use strict';
 function Menu() {}
@@ -210,13 +367,13 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
   'use strict';
   
   var Player = require('../prefabs/player'),
-      Tile = require('../prefabs/tile'),
-      Utilities = require('../lib/utilities');
+      Spaz = require('../prefabs/spaz'),
+      Tile = require('../prefabs/tile');
   
   function Play() {}
   Play.prototype = {
@@ -237,7 +394,7 @@ module.exports = Menu;
   
       this.settings = this.game.settings;
       this.gameSettings = this.game.currentLevel.settings;
-      this.utilities = new Utilities();
+      this.utilities = this.game.utilities;
       
       this.initLevel();      
     },
@@ -330,12 +487,13 @@ module.exports = Menu;
     },
     initLevel: function() {
       this.numTurns = this.gameSettings.numTurns;
+      this.levelScore = 0;
       this.setupBoard();
       this.initHud();
     },
     setupBoard: function() {
-      this.tile = new Tile(this.game, this.settings.boardPosX, this.settings.boardPosY);
-      this.game.add.existing(this.tile);
+      //this.tile = new Tile(this.game, this.settings.boardPosX, this.settings.boardPosY);
+      //this.game.add.existing(this.tile);
       
       var xPos = 0,
           yPos = 0;
@@ -347,16 +505,17 @@ module.exports = Menu;
         for (var x = 0; x < this.settings.numCols; ++x) {
           xPos = x * this.settings.tileSize + this.settings.boardPosX;
 
-          var tile = new Tile(this.game, xPos, yPos, this.utilities.getRandomTile(this.gameSettings.numTiles)); 
+          var tile = new Tile(this.game, xPos, yPos, -1); 
           this.tiles.add(tile);
         }
       }
       //console.log(this.tiles.length);
-      this.player = new Player(this.game, this.tiles.getAt(0), 0);      
+      this.player = new Player(this.game, this.tiles.getAt(0));      
       this.game.add.existing(this.player);
       
       // TODO: Setup spaz group (Need spaz objects... prefabs?)
       this.spazes = this.game.add.group();
+      this.spazes.add(new Spaz(this.game, this.tiles.getAt(4), Spaz.Types.Blocker));
     },
     initHud: function() {
       var hudStyle = { font: '12px Helvetica', fill: '#fff', align: 'left' };
@@ -416,7 +575,7 @@ module.exports = Menu;
   };
   
   module.exports = Play;
-},{"../lib/utilities":1,"../prefabs/player":3,"../prefabs/tile":4}],9:[function(require,module,exports){
+},{"../prefabs/player":4,"../prefabs/spaz":5,"../prefabs/tile":6}],11:[function(require,module,exports){
 
 'use strict';
 function Preload() {
@@ -433,8 +592,9 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.spritesheet('tiles', 'assets/sprites/tilesandobjects' + settings.tileSize + '.png', settings.tileSize, settings.tileSize);
-    this.load.spritesheet('player', 'assets/sprites/player.png', settings.tileSize, settings.tileSize);
+    this.load.spritesheet('sprites', 'assets/sprites/spazspritesheet.png', 32, 32);
+//    this.load.spritesheet('tiles', 'assets/sprites/tilesandobjects' + settings.tileSize + '.png', settings.tileSize, settings.tileSize);
+//    this.load.spritesheet('player', 'assets/sprites/player.png', settings.tileSize, settings.tileSize);
     this.load.image('startButton', 'assets/sprites/start-button.png');
     this.load.image('quitButton', 'assets/sprites/quit-button.png');
   },
@@ -454,4 +614,4 @@ Preload.prototype = {
 
 module.exports = Preload;
 
-},{}]},{},[2])
+},{}]},{},[3])

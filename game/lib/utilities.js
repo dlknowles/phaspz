@@ -11,9 +11,8 @@ var Utilities = function () {
     return Math.floor(Math.random() * (max + 1));
   };
   
-  this.getRandomInt = function(max) {
-    // return Math.floor(Math.random() * (max - min + 1) + min);
-    return Math.floor(Math.random() * (max + 1));
+  this.getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   };
 };
 

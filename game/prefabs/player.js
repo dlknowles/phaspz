@@ -1,11 +1,11 @@
 'use strict';
 
-var Player = function(game, tile, frame) { // , x, y, frame, tile) {
+var Player = function(game, tile) { // , x, y, frame, tile) {
   if (!tile) {
     return null;
   }
   
-  Phaser.Sprite.call(this, game, tile.x, tile.y, 'player', frame);
+  Phaser.Sprite.call(this, game, tile.x, tile.y, 'sprites', game.globals.PlayerFrames[0]);
 
   // initialize your prefab here
   this.currentTile = tile;

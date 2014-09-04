@@ -14,8 +14,9 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.spritesheet('tiles', 'assets/sprites/tilesandobjects' + settings.tileSize + '.png', settings.tileSize, settings.tileSize);
-    this.load.spritesheet('player', 'assets/sprites/player.png', settings.tileSize, settings.tileSize);
+    this.load.spritesheet('sprites', 'assets/sprites/spazspritesheet.png', 32, 32);
+//    this.load.spritesheet('tiles', 'assets/sprites/tilesandobjects' + settings.tileSize + '.png', settings.tileSize, settings.tileSize);
+//    this.load.spritesheet('player', 'assets/sprites/player.png', settings.tileSize, settings.tileSize);
     this.load.image('startButton', 'assets/sprites/start-button.png');
     this.load.image('quitButton', 'assets/sprites/quit-button.png');
   },

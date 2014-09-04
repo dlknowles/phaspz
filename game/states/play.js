@@ -2,8 +2,8 @@
   'use strict';
   
   var Player = require('../prefabs/player'),
-      Tile = require('../prefabs/tile'),
-      Utilities = require('../lib/utilities');
+      Spaz = require('../prefabs/spaz'),
+      Tile = require('../prefabs/tile');
   
   function Play() {}
   Play.prototype = {
@@ -24,7 +24,7 @@
   
       this.settings = this.game.settings;
       this.gameSettings = this.game.currentLevel.settings;
-      this.utilities = new Utilities();
+      this.utilities = this.game.utilities;
       
       this.initLevel();      
     },
@@ -117,12 +117,13 @@
     },
     initLevel: function() {
       this.numTurns = this.gameSettings.numTurns;
+      this.levelScore = 0;
       this.setupBoard();
       this.initHud();
     },
     setupBoard: function() {
-      this.tile = new Tile(this.game, this.settings.boardPosX, this.settings.boardPosY);
-      this.game.add.existing(this.tile);
+      //this.tile = new Tile(this.game, this.settings.boardPosX, this.settings.boardPosY);
+      //this.game.add.existing(this.tile);
       
       var xPos = 0,
           yPos = 0;
@@ -134,16 +135,17 @@
         for (var x = 0; x < this.settings.numCols; ++x) {
           xPos = x * this.settings.tileSize + this.settings.boardPosX;
 
-          var tile = new Tile(this.game, xPos, yPos, this.utilities.getRandomTile(this.gameSettings.numTiles)); 
+          var tile = new Tile(this.game, xPos, yPos, -1); 
           this.tiles.add(tile);
         }
       }
       //console.log(this.tiles.length);
-      this.player = new Player(this.game, this.tiles.getAt(0), 0);      
+      this.player = new Player(this.game, this.tiles.getAt(0));      
       this.game.add.existing(this.player);
       
       // TODO: Setup spaz group (Need spaz objects... prefabs?)
       this.spazes = this.game.add.group();
+      this.spazes.add(new Spaz(this.game, this.tiles.getAt(4), Spaz.Types.Blocker));
     },
     initHud: function() {
       var hudStyle = { font: '12px Helvetica', fill: '#fff', align: 'left' };

@@ -1,12 +1,18 @@
 'use strict';
 
 var Tile = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'tiles', frame);
-
-  // initialize your prefab here
+  this.game = game;
   this.levelSettings = this.game.currentLevel.settings;
-  //this.inputEnabled = true;
-  //this.events.onInputDown.add(this.clickListener, this);
+  
+  if (isNaN(frame)) {
+    frame = -1;
+  }
+  
+  if (frame < 0) {
+    frame = this.getRandomTile();
+  }
+  
+  Phaser.Sprite.call(this, game, x, y, 'sprites', frame);
 };
 
 Tile.prototype = Object.create(Phaser.Sprite.prototype);
@@ -21,6 +27,18 @@ Tile.prototype.update = function() {
 Tile.prototype.clickListener = function() {
   console.log(this);
   this.incrementTile();
+};
+
+Tile.prototype.getRandomTile = function() {
+  var result = 0,
+      numTiles = this.levelSettings.numTiles,
+      startTile = this.game.globals.TileFrames[0];
+        
+  numTiles = (numTiles > this.game.globals.TileFrames.length) ? this.game.globals.TileFrames.length : numTiles;
+  
+  result = this.game.utilities.getRandomInt(startTile, (startTile + numTiles - 1));
+  
+  return result;  
 };
 
 Tile.prototype.incrementTile = function() {

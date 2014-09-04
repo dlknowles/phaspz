@@ -1,6 +1,9 @@
 
 'use strict';
 
+var Globals = require('../lib/globals'),
+    Utilities = require('../lib/utilities');
+
 function Boot() {
 }
 
@@ -14,6 +17,8 @@ Boot.prototype = {
     
     this.game.input.maxPointers = 1;
     this.game.state.start('preload');
+    this.game.globals = new Globals();
+    this.game.utilities = new Utilities();
   },
   initGlobals: function() {
     

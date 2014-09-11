@@ -10,8 +10,32 @@ var Globals = function() {
   this.SpazGroundPounderFrames = [11];
   this.SpazLobberFrames = [11];
   this.SpazSplitterFrames = [11];
+  this.ChangerChance = 0.3;
+  this.WallerChance = 0.3;
+  this.GroundPounderChance = 0.3;
+  this.LobberChance = 0.15;
+  this.SplitterChance = 0.2;
+  this.SplitterMaxSize = 5;
   
+  this.Directions = {
+    Up: 1,
+    Right: 2, 
+    Down: 3,
+    Left: 4
+  };
   
+  this.Levels = [
+    {
+      map: [],
+      maxTurns: '',
+      maxColors: '',
+      maxGems: '',
+      dynamite: '',
+      concrete: '',
+      acidFlasks: '',
+      spazArray: []
+    }
+  ];
 };
 
 module.exports = Globals;
@@ -146,27 +170,44 @@ Spaz.prototype.update = function() {
 };
 
 Spaz.prototype.blockerUpdate = function() {
-  
+  // blockers just sit there
   
 };
 
 Spaz.prototype.changerUpdate = function() {
-  
+  // changers move sometimes. 
+  // when they do, they change the color of the tile they moved to so that it is the same as the one they moved from.
+  if (Math.random() > this.game.globals.ChangerChance) {
+    // pick a direction to move in. 
+    var directionValue = this.game.utilities.getRandomInt(1, 4);
+    
+    // make sure the tile in the move direction isn't blocked
+        
+    // if the new tile isn't blocked, move there
+    
+    // change the color of the new tile to match the previous tile.
+    
+  }
 };
 
 Spaz.prototype.wallerUpdate = function() {
+  // when wallers move, they put a wall in the tile they left.
   
 };
 
 Spaz.prototype.groundPounderUpdate = function() {
+  // when ground pounders move, they leave a hole in the tile they left.
   
 };
 
 Spaz.prototype.lobberUpdate = function() {
+  // lobbers don't move, they just throw blockers around the board.
   
 };
 
 Spaz.prototype.splitterUpdate = function() {
+  // splitters act like changers.
+  // they get a little bigger with each move. when they get too big, they split into two splitters.
   
 };
 
@@ -399,6 +440,10 @@ module.exports = Menu;
       this.initLevel();      
     },
     update: function() {
+      // update player
+      
+      // update spazes
+      
     },
     clickListener: function() {
       var inputX = this.game.input.x,
@@ -503,10 +548,7 @@ module.exports = Menu;
         yPos = y * this.settings.tileSize + this.settings.boardPosY;
 
         for (var x = 0; x < this.settings.numCols; ++x) {
-          xPos = x * this.settings.tileSize + this.settings.boardPosX;
-
-          var tile = new Tile(this.game, xPos, yPos, -1); 
-          this.tiles.add(tile);
+          this.tiles.add(new Tile(this.game, (x * this.settings.tileSize + this.settings.boardPosX), yPos, -1));
         }
       }
       //console.log(this.tiles.length);

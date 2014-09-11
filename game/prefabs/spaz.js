@@ -54,27 +54,44 @@ Spaz.prototype.update = function() {
 };
 
 Spaz.prototype.blockerUpdate = function() {
-  
+  // blockers just sit there
   
 };
 
 Spaz.prototype.changerUpdate = function() {
-  
+  // changers move sometimes. 
+  // when they do, they change the color of the tile they moved to so that it is the same as the one they moved from.
+  if (Math.random() > this.game.globals.ChangerChance) {
+    // pick a direction to move in. 
+    var directionValue = this.game.utilities.getRandomInt(1, 4);
+    
+    // make sure the tile in the move direction isn't blocked
+        
+    // if the new tile isn't blocked, move there
+    
+    // change the color of the new tile to match the previous tile.
+    
+  }
 };
 
 Spaz.prototype.wallerUpdate = function() {
+  // when wallers move, they put a wall in the tile they left.
   
 };
 
 Spaz.prototype.groundPounderUpdate = function() {
+  // when ground pounders move, they leave a hole in the tile they left.
   
 };
 
 Spaz.prototype.lobberUpdate = function() {
+  // lobbers don't move, they just throw blockers around the board.
   
 };
 
 Spaz.prototype.splitterUpdate = function() {
+  // splitters act like changers.
+  // they get a little bigger with each move. when they get too big, they split into two splitters.
   
 };
 

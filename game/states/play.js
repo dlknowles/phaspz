@@ -29,6 +29,10 @@
       this.initLevel();      
     },
     update: function() {
+      // update player
+      
+      // update spazes
+      
     },
     clickListener: function() {
       var inputX = this.game.input.x,
@@ -133,10 +137,7 @@
         yPos = y * this.settings.tileSize + this.settings.boardPosY;
 
         for (var x = 0; x < this.settings.numCols; ++x) {
-          xPos = x * this.settings.tileSize + this.settings.boardPosX;
-
-          var tile = new Tile(this.game, xPos, yPos, -1); 
-          this.tiles.add(tile);
+          this.tiles.add(new Tile(this.game, (x * this.settings.tileSize + this.settings.boardPosX), yPos, -1));
         }
       }
       //console.log(this.tiles.length);
